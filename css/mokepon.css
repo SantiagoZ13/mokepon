@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+html{
+    font-size: 62.5%;
+    font-family: 'Press Start 2P', cursive;
+}
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+body{
+    background: #011627;
+    color: #41EAD4;
+}
+.mokepon-section{
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: 1fr;
+    place-items: center;
+    width: 100%;
+    height: 80vh;
+}
+h1{ 
+    width: 100%;
+    text-align: center;
+    margin: 4rem 0;
+    font-size: 3.4rem;
+}
+.mokepon-section h2{
+    width: 100%;
+    text-align: center;
+    font-size: 1.8rem;
+}
+.mokepon-section .cards-container{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    grid-template-rows: repeat(2, 1fr);
+}
+.mokepon-section .cards-container input{
+    display: none;
+}
+.card-mokepon{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    place-items: center;
+    width: 18rem;
+    height: 16rem;
+    margin: 1.4rem;
+    color: #FDFFFC;
+    font-size: 1.4rem;
+    font-weight: bold;
+    background: #ba0c18;
+    border-radius: 2rem;
+    transition: all 0.6s;
+    cursor: pointer;
+}
+.mokepon-section .cards-container input:checked+.card-mokepon{
+    box-shadow: 0 0 1rem 0.6rem #fafdff;
+    color: #FDFFFC;
+    background: #c00c1882;
+}
+.card-mokepon:hover{
+    box-shadow: 0 0 1rem 0.6rem #fafdff;
+    color: #FDFFFC;
+    background: #c00c1882;
+}
+.card-mokepon img{
+    margin-top: 1rem;
+    width: 11rem;
+    height: 11rem;
+}
+.btn{
+    padding: 1.5rem 2.5rem;
+    border-radius: 1rem;
+    font-family: 'Press Start 2P', cursive;
+    color: #FDFFFC;
+    cursor: pointer;
+    transition: all 0.6s;
+}
+
+.btn-selection{
+    background: #35c0b0;
+    word-spacing: 10px;
+    font-size: 1.3rem;
+}
+.btn-selection:hover{
+    background: transparent;
+    border: 0.1rem solid #35c0b0;
+    letter-spacing: 0.3rem;
+}
+
+.attack-section{
+    place-items: center;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 1fr);
+    width: 100%;
+    height: 80vh;
+}
+.attack-section .select-attack h2{
+    font-size: 1.8rem;
+    text-align: center;
+    margin: 0 0 3.2rem 0 ;
+}
+.attack-section .select-attack > *{
+    margin: 0 1rem;
+}
+.attack-section .btn-water{
+    background: #0548bc;
+    
+}
+.attack-section .btn-water:hover{
+    box-shadow: 0 0 1rem 0.6rem #2b6ee0;
+}
+.attack-section .btn-fire{
+    background: #9f0606;
+}
+.attack-section .btn-fire:hover{
+    box-shadow: 0 0 1rem 0.6rem #fc0b0b;
+}
+
+.attack-section .btn-ground{
+    background: #04620a;
+}
+.attack-section .btn-ground:hover{
+    box-shadow: 0 0 1rem 0.6rem #07cf14;
+}
+.cards-battle-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6rem;
+}
+.card-battle{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 20rem;
+    height: 24rem;
+    background: #41EAD4;
+    color: #011627;
+    border-radius: 2rem;
+}
+.card-battle h3{
+    font-size: 4.8rem;
+}
+.card-battle p{
+    font-size: 1.2rem;
+}
+#result{
+    font-size: 1.4rem;
+    text-align: center;
+}
+
+@media (max-width: 625px){
+    .mokepon-section .cards-container{
+        grid-template-columns: repeat(2, 1fr); 
+        grid-template-rows: repeat(3, 1fr);
+    }
+    h1{
+        font-size: 2.6rem;
+    }
+}
+@media (max-width: 400px){
+    .mokepon-section .cards-container{
+        grid-template-columns: 1fr; 
+        grid-template-rows: repeat(6, 1fr);
+    }
+    h1{
+        font-size: 2rem;
+    }
+}
