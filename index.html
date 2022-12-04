@@ -5,47 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mokepon </title>
-    
     <link rel="stylesheet" href="./css/mokepon.css">
-    <script src="./js/mokepon.js"></script>
 </head>
 <body>
     <h1>Mokepon 💧🔥🌱</h1>
     <section class="mokepon-section" id="mokepon-selection">
             
             <h2>Escoge tu mokepon:</h2>
-        <div class="cards-container">
-            
-            <input name="mokepon" type="radio" id="fisty">
-            <label class="card-mokepon" for="fisty">
-                <p>Fisty</p>
-                <img src="./assets/fisty.png" alt="mokepon fisty">
-            </label>
-            <input name="mokepon" type="radio" id="gorat">
-            <label class="card-mokepon" for="gorat">
-                <p>Gorat</p>
-                <img src="./assets/Gorat.png" alt="mokepon gorat">
-            </label>
-            <input name="mokepon" type="radio" id="esmel">
-            <label class="card-mokepon" for="esmel">
-                <p>Esmel</p>
-                <img src="./assets/esmel.png" alt="mokeponesmel">
-            </label>
-            <input name="mokepon" type="radio" id="zerox">
-            <label class="card-mokepon" for="zerox">
-                <p>Zerox</p>
-                <img src="./assets/zerox.png" alt="mokepon zerox">
-            </label>
-            <input  name="mokepon" type="radio" id="rasfas">
-            <label class="card-mokepon" for="rasfas">
-                <p>Rasfas</p>
-                <img src="./assets/rasfas.png" alt="mokepon rasfas">
-            </label>
-            <input name="mokepon" type="radio" id="sesbos">
-            <label class="card-mokepon" for="sesbos">
-                <p>Sesbos</p>
-                <img src="./assets/sesbos.png" alt="mokepon sesbos">
-            </label>
+        <div id="cards-container" class="cards-container">
+                
         </div>
         
         <button class="btn btn-selection" id="btn-mokepon-selection">Seleccionar</button>
@@ -53,11 +21,8 @@
     
     <section hidden="true" class="attack-section" id="attack-selection">
         
-        <div class="select-attack">
+        <div id="attack-container" class="select-attack">
             <h2>Elige tu ataque:</h2>
-            <button class="btn btn-water" id="water-attack">Agua 💧</button>
-            <button class="btn btn-fire" id="fire-attack">Fuego 🔥</button>
-            <button class="btn btn-ground" id="ground-attack">Tierra 🌱</button>
         </div>
         <section id="result">
 
@@ -88,6 +53,6 @@
         </div>
     </section>
     
-    
+    <script src="./js/mokepon.js"></script>
 </body>
 </html>

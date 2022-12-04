@@ -54,7 +54,7 @@ h1{
     color: #FDFFFC;
     font-size: 1.4rem;
     font-weight: bold;
-    background: #ba0c18;
+    background: #d71e2b;
     border-radius: 2rem;
     transition: all 0.6s;
     cursor: pointer;
@@ -109,24 +109,24 @@ h1{
 .attack-section .select-attack > *{
     margin: 0 1rem;
 }
-.attack-section .btn-water{
-    background: #0548bc;
+.attack-section .water-attack{
+    background: #185acb;
     
 }
-.attack-section .btn-water:hover{
+.attack-section .water-attack:hover{
     box-shadow: 0 0 1rem 0.6rem #2b6ee0;
 }
-.attack-section .btn-fire{
-    background: #9f0606;
+.attack-section .fire-attack{
+    background: #d71e2b;
 }
-.attack-section .btn-fire:hover{
+.attack-section .fire-attack:hover{
     box-shadow: 0 0 1rem 0.6rem #fc0b0b;
 }
 
-.attack-section .btn-ground{
-    background: #04620a;
+.attack-section .ground-attack{
+    background: #0cad17;
 }
-.attack-section .btn-ground:hover{
+.attack-section .ground-attack:hover{
     box-shadow: 0 0 1rem 0.6rem #07cf14;
 }
 .cards-battle-container{
@@ -143,7 +143,7 @@ h1{
     width: 20rem;
     height: 24rem;
     background: #41EAD4;
-    color: #011627;
+    color: #113958;
     border-radius: 2rem;
 }
 .card-battle h3{
