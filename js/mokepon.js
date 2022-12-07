@@ -11,10 +11,13 @@ const messageSectionBot = document.getElementById('message-attack-bot')
 const cardsContainer = document.getElementById('cards-container')
 const attackContainer = document.getElementById('attack-container')
 const btnRestart = document.getElementById("btn-restart")
+const mapContainer = document.getElementById('map-section')
+const map = document.getElementById('map')
 
+let botAttacks = []
 let buttons = []
 let playerAttack = []
-let botAttack
+let botAttackSequence = []
 let result
 let mokeponStructure
 let inputFisty
@@ -25,12 +28,20 @@ let inputRasfas
 let inputSesbos
 let playerLives = 3
 let botLives = 3
+let playerVictories = 0
+let botVictories = 0
 let mokepons = []
 let btnFire
 let btnGround
 let btnWater
 let playerMokepon
 let mokeponAttacks
+let randomMokeponSelection
+let playerAttackSelected
+let botAttackSelected
+let i = 0
+let canvas = map.getContext('2d')
+let interval
 
 class Mokepon{
     constructor(name, image, life){
@@ -38,6 +49,14 @@ class Mokepon{
         this.image = image
         this.life = life
         this.attacks = []
+        this.x = 20
+        this.y = 40
+        this.width = 80
+        this.height = 80
+        this.imageInMap = new Image()
+        this.imageInMap.src = image
+        this.speedX = 0
+        this.speedY = 0
     }
 }
 
@@ -49,51 +68,55 @@ let rasfas = new Mokepon('Rasfas', './assets/rasfas.png', 5)
 let sesbos = new Mokepon('Sesbos', './assets/sesbos.png', 5)
 
 fisty.attacks.push(
-    { nombre: 'Agua 💧', id: 'water-attack' },
-    { nombre: 'Agua 💧', id: 'water-attack' },
-    { nombre: 'Agua 💧', id: 'water-attack' },
-    { nombre: 'Fuego 🔥', id: 'fire-attack' },
-    { nombre: 'Tierra 🌱', id: 'ground-attack'}
+    { name: 'Water 💧', id: 'water-attack' },
+    { name: 'Water 💧', id: 'water-attack' },
+    { name: 'Water 💧', id: 'water-attack' },
+    { name: 'Fire 🔥', id: 'fire-attack' },
+    { name: 'Ground 🌱', id: 'ground-attack'}
 )
 gorat.attacks.push(
-    { nombre: 'Fuego 🔥', id: 'fire-attack' },
-    { nombre: 'Fuego 🔥', id: 'fire-attack' },
-    { nombre: 'Fuego 🔥', id: 'fire-attack' },
-    { nombre: 'Agua 💧', id: 'water-attack' },
-    { nombre: 'Tierra 🌱', id: 'ground-attack' }
+    { name: 'Fire 🔥', id: 'fire-attack' },
+    { name: 'Fire 🔥', id: 'fire-attack' },
+    { name: 'Fire 🔥', id: 'fire-attack' },
+    { name: 'Water 💧', id: 'water-attack' },
+    { name: 'Ground 🌱', id: 'ground-attack' }
 )
 esmel.attacks.push(
-    { nombre: 'Tierra 🌱', id: 'ground-attack' },
-    { nombre: 'Tierra 🌱', id: 'ground-attack' },
-    { nombre: 'Tierra 🌱', id: 'ground-attack' },
-    { nombre: 'Fuego 🔥', id: 'fire-attack' },
-    { nombre: 'Agua 💧', id: 'water-attack' }
+    { name: 'Ground 🌱', id: 'ground-attack' },
+    { name: 'Ground 🌱', id: 'ground-attack' },
+    { name: 'Ground 🌱', id: 'ground-attack' },
+    { name: 'Fire 🔥', id: 'fire-attack' },
+    { name: 'Water 💧', id: 'water-attack' }
 )
 zerox.attacks.push(
-    { nombre: 'Agua 💧', id: 'water-attack' },
-    { nombre: 'Agua 💧', id: 'water-attack' },
-    { nombre: 'Fuego 🔥', id: 'fire-attack' },
-    { nombre: 'Fuego 🔥', id: 'fire-attack' },
-    { nombre: 'Tierra 🌱', id: 'ground-attack' }
+    { name: 'Water 💧', id: 'water-attack' },
+    { name: 'Water 💧', id: 'water-attack' },
+    { name: 'Fire 🔥', id: 'fire-attack' },
+    { name: 'Fire 🔥', id: 'fire-attack' },
+    { name: 'Ground 🌱', id: 'ground-attack' }
 )
 rasfas.attacks.push(
-    { nombre: 'Agua 💧', id: 'water-attack' },
-    { nombre: 'Agua 💧', id: 'water-attack' },
-    { nombre: 'Tierra 🌱', id: 'ground-attack' },
-    { nombre: 'Tierra 🌱', id: 'ground-attack' },
-    { nombre: 'Fuego 🔥', id: 'fire-attack' }
+    { name: 'Water 💧', id: 'water-attack' },
+    { name: 'Water 💧', id: 'water-attack' },
+    { name: 'Ground 🌱', id: 'ground-attack' },
+    { name: 'Ground 🌱', id: 'ground-attack' },
+    { name: 'Fire 🔥', id: 'fire-attack' }
 )
 sesbos.attacks.push(
-    { nombre: 'Fuego 🔥', id: 'fire-attack' },
-    { nombre: 'Fuego 🔥', id: 'fire-attack' },
-    { nombre: 'Tierra 🌱', id: 'ground-attack' },
-    { nombre: 'Tierra 🌱', id: 'ground-attack' },
-    { nombre: 'Agua 💧', id: 'water-attack' }
+    { name: 'Fire 🔥', id: 'fire-attack' },
+    { name: 'Fire 🔥', id: 'fire-attack' },
+    { name: 'Ground 🌱', id: 'ground-attack' },
+    { name: 'Ground 🌱', id: 'ground-attack' },
+    { name: 'Water 💧', id: 'water-attack' }
 )
 
 mokepons.push(fisty, gorat, esmel, zerox, rasfas, sesbos)
 
 const initializeGame = () => {
+
+    mapContainer.style.display = 'none'
+    attackSelectionContainer.style.display = 'none'
+
     mokepons.forEach((mokepon) =>{
         mokeponStructure = `
         <input name=${mokepon.name} type="radio" id=${mokepon.name}>
@@ -152,13 +175,20 @@ const mascotaSelect = () => {
     buscarAtaques(playerMokepon)
 }
 
+const showSections = () => {
+    mokeponSelectionContainer.style.display = 'none'
+    mapContainer.style.display = 'flex'
+    
+    //attackSelectionContainer.style.display = 'flex'
+    optionsContainer.hidden = false
+    intervalo = setInterval(paintMokepon, 40)
+}
+
 function buscarAtaques(playerMokepon){
-    // Implementar los ataques del enemigo
     let attacksPlayer
     for (let i = 0; i < mokepons.length; i++) {
         if (playerMokepon == mokepons[i].name){
             attacksPlayer = mokepons[i].attacks
-            
         }   
     }
     showAttacks(attacksPlayer)
@@ -168,13 +198,11 @@ function buscarAtaques(playerMokepon){
 function showAttacks(attacks){
     attacks.forEach((attack) =>{
         mokeponAttacks = `
-        <button id="${attack.id}" class="btn ${attack.id} attack-btn" >${attack.nombre}</button>
+        <button id="${attack.id}" class="btn ${attack.id} attack-btn" >${attack.name}</button>
         `
         attackContainer.innerHTML += mokeponAttacks
     })
     buttons = document.querySelectorAll('.attack-btn')
-
-    console.log(buttons)
 
     btnWater = document.getElementById('water-attack')
     btnFire = document.getElementById('fire-attack')
@@ -185,80 +213,94 @@ function showAttacks(attacks){
 const attackSequence = () =>{  
     buttons.forEach((boton) =>{
         boton.addEventListener('click', (e) =>{   
-           if(e.target.textContent === 'Agua 💧'){
-            playerAttack.push("AGUA")
+           if(e.target.textContent === 'Water 💧'){
+            playerAttack.push("Water 💧")
             console.log(playerAttack)
-            boton.style.background = '#616f79' 
-           } else if(e.target.textContent === 'Fuego 🔥'){
-            playerAttack.push("FUEGO")
+            boton.classList.remove('water-attack')
+            boton.classList.add('btn-usado')
+            boton.disabled = true
+           } else if(e.target.textContent === 'Fire 🔥'){
+            playerAttack.push("Fire 🔥")
             console.log(playerAttack)
-            boton.style.background = '#616f79' 
+            boton.classList.remove('fire-attack')
+            boton.classList.add('btn-usado')
+            boton.disabled = true
            } else{
-            playerAttack.push("TIERRA")
+            playerAttack.push("Ground 🌱")
             console.log(playerAttack)
-            boton.style.background = '#616f79'  
+            boton.classList.remove('ground-attack')
+            boton.classList.add('btn-usado')
+            boton.disabled = true
            }
+           generateRandomAttack()
         })
     })
 }
 
-const showSections = () => {
-    mokeponSelectionContainer.style.display = 'none'
-    attackSelectionContainer.style.display = 'grid'
-    optionsContainer.hidden = false
-}
-
 const generateRandomMokepon = () => {
-    let randomNumber = generateRandomNumber(0, mokepons.length -1)
-    randomMokepon.innerHTML = mokepons[randomNumber].name
-}
-
-const waterAttack = () =>{
-    playerAttack = 'Water 💧'
-    generateRandomAttack()
-}
-const fireAttack = () =>{
-    playerAttack = 'Fire 🔥'
-    generateRandomAttack()
-}
-const groundAttack = () =>{
-    playerAttack = 'Ground 🌱'
-    generateRandomAttack()
+    randomMokeponSelection = generateRandomNumber(0, mokepons.length -1)
+    randomMokepon.innerHTML = mokepons[randomMokeponSelection].name
+    botAttacks = mokepons[randomMokeponSelection].attacks
 }
 
 const generateRandomAttack = () => {
-    let randomNumber = generateRandomNumber(1, 3)
-    if(randomNumber == 1){
-        botAttack = 'Water 💧'
-    }else if(randomNumber == 2){
-        botAttack = 'Fire 🔥'
-    }else if(randomNumber == 3){
-        botAttack = 'Ground 🌱'
+    let randomAttack = generateRandomNumber(0, botAttacks.length -1)
+    if(mokepons[0] || mokepons[1] || mokepons[2]){
+        if(randomAttack == 0 || randomAttack == 1  || randomAttack == 2){
+            botAttackSequence.push(mokepons[randomMokeponSelection].attacks[0].name)
+        }else if(randomAttack == 3){
+            botAttackSequence.push(mokepons[randomMokeponSelection].attacks[3].name)
+        }else{
+            botAttackSequence.push(mokepons[randomMokeponSelection].attacks[4].name)
+        }
     }else{
-
+        if(randomAttack == 0 || randomAttack == 1  ){
+            botAttackSequence.push(mokepons[randomMokeponSelection].attacks[0].name)
+        }else if(randomAttack == 2 || randomAttack == 3){
+            botAttackSequence.push(mokepons[randomMokeponSelection].attacks[2].name)
+        }else{
+            botAttackSequence.push(mokepons[randomMokeponSelection].attacks[4].name)
+        }
     }
-    combat()
+    
+    console.log(botAttackSequence)
+    combat(playerAttack, botAttackSequence)
 }
 
-const combat = () =>{
-    if(playerAttack == botAttack){
-    }
-    else if ((playerAttack == 'Water 💧' && botAttack == 'Fire 🔥') || (playerAttack == 'Fire 🔥' && botAttack == 'Ground 🌱') || (playerAttack == 'Ground 🌱' && botAttack == 'Water 💧')){
-        botLives--
-        spanBotLives.innerHTML = botLives
-    }else{
-        playerLives--
-        spanPlayerLives.innerHTML = playerLives
-    }
-    figthMessage()
-    evaluateWin()
+const guardarVariables = (index) =>{
+    playerAttackSelected = playerAttack[index]
+    botAttackSelected = botAttackSequence[index]
 }
 
-const figthMessage = () =>{
+const combat = (arrayPlayer, arrayBot) =>{
+    
+        if (arrayPlayer[i] === arrayBot[i]) {
+            guardarVariables(i)
+            figthMessage()
+        }else if((arrayPlayer[i] === 'Water 💧' && arrayBot[i] === 'Fire 🔥') || (arrayPlayer[i] === 'Fire 🔥' && arrayBot[i] === 'Ground 🌱') || (arrayPlayer[i] === 'Ground 🌱' && arrayBot[i] === 'Water 💧')){
+            guardarVariables(i)
+            figthMessage()
+            playerVictories++
+            spanPlayerLives.innerHTML = playerVictories
+        }else{
+            guardarVariables(i)
+            figthMessage()
+            botVictories++
+            spanBotLives.innerHTML = botVictories
+        }
+        i++
+
+        if (arrayPlayer.length == 5) {
+            evaluateWin()        
+        }
+    
+}
+
+const figthMessage = () =>{     
     let messagePlayer = document.createElement('p')
     let messageBot = document.createElement('p')
-    messagePlayer.innerHTML = `${playerAttack}  `
-    messageBot.innerHTML = `${botAttack}`
+    messagePlayer.innerHTML = `${playerAttackSelected}`
+    messageBot.innerHTML = `${botAttackSelected}`
     messageSectionPlayer.appendChild(messagePlayer)
     messageSectionBot.appendChild(messageBot)
 }
@@ -271,22 +313,17 @@ const finalMessage = () =>{
 }
 
 const evaluateWin = () =>{
-    if(playerLives < 1){
-        result = 'Perdiste <br> ----Vuelve a intentarlo----'
+    if(playerVictories === botVictories){
+        result = 'Empate <br> ----Vuelve a intentarlo----'
         finalMessage()
-        disableButtons()
-    }else if(botLives < 1){
+    }else if(playerVictories > botVictories){
         result = "🏆 Ganaste 🏆 <br> ----¡Bien Hecho!----"
         finalMessage()
-        disableButtons()
+    }else{
+        result = 'Perdiste <br> ----Vuelve a intentarlo----'
+        finalMessage()
     }
     
-}
-
-const disableButtons = () =>{
-    btnWater.disabled = true
-    btnFire.disabled = true
-    btnGround.disabled = true
 }
 
 const restartGame = () =>{
@@ -296,6 +333,29 @@ const restartGame = () =>{
 const generateRandomNumber = (min, max) => {
     let randomNumber = Math.floor(Math.random() * (max - min + 1) + min)
     return randomNumber
+}
+const paintMokepon = () =>{
+    esmel.x = esmel.x + esmel.speedX
+    esmel.y = esmel.y + esmel.speedY
+    canvas.clearRect(0, 0, map.width, map.height)
+    canvas.drawImage(esmel.imageInMap, esmel.x, esmel.y, esmel.width, esmel.height)
+}
+
+const moveUp = () =>{
+    esmel.speedY = -4
+}
+const moveLeft = () =>{
+    esmel.speedX = -4
+}
+const moveRight = () =>{
+    esmel.speedX = 4
+}
+const moveDown = () =>{
+    esmel.speedY = 4
+}
+const stopMotion = () =>{
+    esmel.speedX = 0
+    esmel.speedY = 0
 }
 
 window.addEventListener('load', initializeGame)

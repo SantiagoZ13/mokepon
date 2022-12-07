@@ -81,6 +81,7 @@ h1{
     color: #FDFFFC;
     cursor: pointer;
     transition: all 0.6s;
+    margin: 0.8rem;
 }
 
 .btn-selection{
@@ -101,14 +102,12 @@ h1{
     width: 100%;
     height: 80vh;
 }
-.attack-section .select-attack h2{
+.select-attack h2{
     font-size: 1.8rem;
     text-align: center;
     margin: 0 0 3.2rem 0 ;
 }
-.attack-section .select-attack > *{
-    margin: 0 1rem;
-}
+
 .attack-section .water-attack{
     background: #185acb;
     
@@ -156,7 +155,37 @@ h1{
     font-size: 1.4rem;
     text-align: center;
 }
-
+.btn-usado{
+    background: #686f75;
+}
+.map-section{
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+.map{
+    border: 0.2rem solid white;
+}
+.img-arrow{ 
+    cursor: pointer;
+    width: 5rem;
+    height: 5rem;
+}
+.up{
+    rotate: 270deg;
+    margin-top: 1rem;
+}
+.left{
+    margin-right: 1.8rem;
+    rotate: 180deg;
+}
+.right{
+    margin-left: 1.8rem;
+}
+.down{
+    rotate: 90deg
+}
 @media (max-width: 625px){
     .mokepon-section .cards-container{
         grid-template-columns: repeat(2, 1fr); 
@@ -164,6 +193,23 @@ h1{
     }
     h1{
         font-size: 2.6rem;
+    }
+    .select-attack{
+        display: flex;
+        flex-direction: column;
+    }
+    .select-attack h2{
+        font-size: 1.4rem;
+    }
+    .cards-battle-container{
+        flex-wrap: wrap;
+        gap: 0;
+    }
+    .card-battle{
+        margin: 1.2rem;
+    }
+    .options{
+        margin: 0.8rem;
     }
 }
 @media (max-width: 400px){
@@ -174,4 +220,5 @@ h1{
     h1{
         font-size: 2rem;
     }
+    
 }

@@ -18,7 +18,20 @@
         
         <button class="btn btn-selection" id="btn-mokepon-selection">Seleccionar</button>
     </section>
-    
+    <section id="map-section" class="map-section">
+        <h2>Recorre el mapa:</h2>
+        <canvas id="map" class="map"></canvas>
+        <div>
+            <img onmouseup="stopMotion()" onmousedown="moveUp()" class="img-arrow up" src="../assets/arrow.png" alt="up arrow">
+        </div>
+        <div>
+            <img onmouseup="stopMotion()" onmousedown="moveLeft()" class="img-arrow left" src="../assets/arrow.png" alt="left arrow">
+            <img onmouseup="stopMotion()" onmousedown="moveRight()" class="img-arrow right" src="../assets/arrow.png" alt="rigth arrow">
+        </div>
+        <div>
+            <img onmouseup="stopMotion()" onmousedown="moveDown()" class="img-arrow down" src="../assets/arrow.png" alt="down arrow">
+        </div>
+    </section>
     <section hidden="true" class="attack-section" id="attack-selection">
         
         <div id="attack-container" class="select-attack">
@@ -29,7 +42,7 @@
         </section>
         <div class="cards-battle-container">
             <div class="card-battle">
-                <h3><span id="player-lives">3</span></h3>
+                <h3><span id="player-lives">0</span></h3>
                 <p>Tu: <span id="player-mokepon-name"></span> </p>
                 <section id="message-attack-player">
         
@@ -37,7 +50,7 @@
                 
             </div>
             <div class="card-battle">
-                <h3><span id="bot-lives">3</span></h3>
+                <h3><span id="bot-lives">0</span></h3>
                 <p>Enemigo: <span id="bot-mokepon-name"></span>  </p>
                 <section id="message-attack-bot">
         
@@ -47,7 +60,7 @@
             
             
         </div>
-        <div hidden="true" id="options">
+        <div hidden="true" id="options" class="options">
             <button class="btn btn-selection" id="btn-restart">Reiniciar</button>
             <button class="btn btn-selection">Salir</button>
         </div>
