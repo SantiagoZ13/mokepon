@@ -162,7 +162,7 @@ h1{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+    
 }
 .map{
     border: 0.2rem solid white;
@@ -174,14 +174,14 @@ h1{
 }
 .up{
     rotate: 270deg;
-    margin-top: 1rem;
+    margin-top: 0.6rem;
 }
 .left{
-    margin-right: 1.8rem;
+    margin-right: 1.4rem;
     rotate: 180deg;
 }
 .right{
-    margin-left: 1.8rem;
+    margin-left: 1.4rem;
 }
 .down{
     rotate: 90deg

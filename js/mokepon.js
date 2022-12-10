@@ -14,6 +14,7 @@ const btnRestart = document.getElementById("btn-restart")
 const mapContainer = document.getElementById('map-section')
 const map = document.getElementById('map')
 
+let mokeponSelected
 let botAttacks = []
 let buttons = []
 let playerAttack = []
@@ -42,30 +43,48 @@ let botAttackSelected
 let i = 0
 let canvas = map.getContext('2d')
 let interval
+let mapBackground = new Image()
+mapBackground.src = './assets/mokemap.jpg'
+
 
 class Mokepon{
-    constructor(name, image, life){
+    constructor(name, image, life, Mapimage, width = 60, height = 60, x = 10, y = 10){
         this.name = name
         this.image = image
         this.life = life
         this.attacks = []
-        this.x = 20
-        this.y = 40
-        this.width = 80
-        this.height = 80
+        this.x = x
+        this.y = y
+        this.width = width
+        this.height = height
         this.imageInMap = new Image()
-        this.imageInMap.src = image
+        this.imageInMap.src = Mapimage
         this.speedX = 0
         this.speedY = 0
     }
+    paintMokepon(){
+        canvas.drawImage(this.imageInMap, this.x, this.y, this.width, this.height)
+    }
 }
 
-let fisty = new Mokepon('Fisty', './assets/fisty.png', 3)
-let gorat = new Mokepon('Gorat', './assets/Gorat.png', 3)
-let esmel = new Mokepon('Esmel', './assets/esmel.png', 3)
-let zerox = new Mokepon('Zerox', './assets/zerox.png', 5)
-let rasfas = new Mokepon('Rasfas', './assets/rasfas.png', 5)
-let sesbos = new Mokepon('Sesbos', './assets/sesbos.png', 5)
+const generateRandomNumber = (min, max) => {
+    let randomNumber = Math.floor(Math.random() * (max - min + 1) + min)
+    return randomNumber
+}
+
+let fisty = new Mokepon('Fisty', './assets/fisty.png', 3, './assets/fistyMap.png')
+let gorat = new Mokepon('Gorat', './assets/Gorat.png', 3, './assets/goratMap.png')
+let esmel = new Mokepon('Esmel', './assets/esmel.png', 3, './assets/esmelMap.png')
+let zerox = new Mokepon('Zerox', './assets/zerox.png', 5, './assets/zeroxMap.png', 80, 60)
+let rasfas = new Mokepon('Rasfas', './assets/rasfas.png', 5, './assets/rasfasMap1.png', 80, 60)
+let sesbos = new Mokepon('Sesbos', './assets/sesbos.png', 5, './assets/sesbosMap.png')
+
+let fistyEnemy = new Mokepon('Fisty', './assets/fisty.png', 3, './assets/fistyMap.png',60 ,60 ,generateRandomNumber(20, 460), generateRandomNumber(20, 280))
+let goratEnemy = new Mokepon('Gorat', './assets/Gorat.png', 3, './assets/goratMap.png',60 ,60,generateRandomNumber(20, 460), generateRandomNumber(20, 280))
+let esmelEnemy = new Mokepon('Esmel', './assets/esmel.png', 3, './assets/esmelMap.png',60 ,60 ,generateRandomNumber(20, 460), generateRandomNumber(20, 280))
+let zeroxEnemy = new Mokepon('Zerox', './assets/zerox.png', 5, './assets/zeroxMap.png', 80,60, generateRandomNumber(20, 460), generateRandomNumber(20, 280))
+let rasfasEnemy = new Mokepon('Rasfas', './assets/rasfas.png', 5, './assets/rasfasMap1.png', 80, 60, generateRandomNumber(20, 460), generateRandomNumber(20, 280))
+let sesbosEnemy = new Mokepon('Sesbos', './assets/sesbos.png', 5, './assets/sesbosMap.png',60,60, generateRandomNumber(20, 460), generateRandomNumber(20, 280))
 
 fisty.attacks.push(
     { name: 'Water 💧', id: 'water-attack' },
@@ -136,36 +155,36 @@ const initializeGame = () => {
     inputRasfas = document.getElementById('Rasfas')
     inputSesbos = document.getElementById('Sesbos')
 
-    btnMokeponSelection.addEventListener('click', mascotaSelect)
+    btnMokeponSelection.addEventListener('click', mokeponSelect)
     btnRestart.addEventListener('click', restartGame)
     
 }
 
-const mascotaSelect = () => {
+const mokeponSelect = () => {
     if(inputFisty.checked){
         playerMokeponName.innerHTML = inputFisty.id
-        showSections()
         playerMokepon = inputFisty.id
+        showSections()
     }else if(inputGorat.checked){
         playerMokeponName.innerHTML = inputGorat.id
-        showSections()
         playerMokepon = inputGorat.id
+        showSections()
     }else if(inputEsmel.checked){
         playerMokeponName.innerHTML = inputEsmel.id
-        showSections()
         playerMokepon = inputEsmel.id
+        showSections()
     }else if(inputZerox.checked){
         playerMokeponName.innerHTML = inputZerox.id
-        showSections()
         playerMokepon = inputZerox.id
+        showSections()
     }else if(inputRasfas.checked){
         playerMokeponName.innerHTML = inputRasfas.id
-        showSections()
         playerMokepon = inputRasfas.id
+        showSections()
     }else if(inputSesbos.checked){
         playerMokeponName.innerHTML = inputSesbos.id
-        showSections()
         playerMokepon = inputSesbos.id
+        showSections()
     }else{
         alert('Selecciona una mascota')
     }
@@ -176,12 +195,13 @@ const mascotaSelect = () => {
 }
 
 const showSections = () => {
+    
     mokeponSelectionContainer.style.display = 'none'
     mapContainer.style.display = 'flex'
     
     //attackSelectionContainer.style.display = 'flex'
     optionsContainer.hidden = false
-    intervalo = setInterval(paintMokepon, 40)
+    initMap()
 }
 
 function buscarAtaques(playerMokepon){
@@ -330,32 +350,75 @@ const restartGame = () =>{
     location.reload()
 }
 
-const generateRandomNumber = (min, max) => {
-    let randomNumber = Math.floor(Math.random() * (max - min + 1) + min)
-    return randomNumber
-}
-const paintMokepon = () =>{
-    esmel.x = esmel.x + esmel.speedX
-    esmel.y = esmel.y + esmel.speedY
+const paintCanvas = () =>{
+    mokeponSelected.x = mokeponSelected.x + mokeponSelected.speedX
+    mokeponSelected.y = mokeponSelected.y + mokeponSelected.speedY
     canvas.clearRect(0, 0, map.width, map.height)
-    canvas.drawImage(esmel.imageInMap, esmel.x, esmel.y, esmel.width, esmel.height)
+    canvas.drawImage(mapBackground, 0, 0, map.width, map.height)
+    mokeponSelected.paintMokepon()
+    fistyEnemy.paintMokepon()
+    goratEnemy.paintMokepon()
+    esmelEnemy.paintMokepon()
+    zeroxEnemy.paintMokepon()
+    rasfasEnemy.paintMokepon()
+    sesbosEnemy.paintMokepon()
 }
 
 const moveUp = () =>{
-    esmel.speedY = -4
+    mokeponSelected.speedY = -4
 }
 const moveLeft = () =>{
-    esmel.speedX = -4
+    mokeponSelected.speedX = -4
 }
 const moveRight = () =>{
-    esmel.speedX = 4
+    mokeponSelected.speedX = 4
 }
 const moveDown = () =>{
-    esmel.speedY = 4
+    mokeponSelected.speedY = 4
 }
+
 const stopMotion = () =>{
-    esmel.speedX = 0
-    esmel.speedY = 0
+    mokeponSelected.speedX = 0
+    mokeponSelected.speedY = 0
+}
+
+const keyPressed = (event) =>{
+    switch (event.key) {
+        case 'ArrowUp':
+        case 'w':
+            moveUp()
+            break;
+        case 'ArrowLeft':
+        case 'a':
+            moveLeft()
+            break;
+        case 'ArrowRight':
+        case 'd':
+            moveRight()
+            break;
+        case 'ArrowDown':
+        case 's':
+            moveDown()
+            break;
+        default:
+            break;
+    }
+}
+const initMap = () =>{
+    mokeponSelected = getSelectedMokepon()
+    map.width = 520
+    map.height = 340
+    interval = setInterval(paintCanvas, 40)
+    window.addEventListener('keydown', keyPressed)
+    window.addEventListener('keyup', stopMotion)
+}
+
+const getSelectedMokepon = () =>{
+    for (let i = 0; i < mokepons.length; i++) {
+        if (playerMokepon == mokepons[i].name){
+            return mokepons[i]
+        }   
+    }
 }
 
 window.addEventListener('load', initializeGame)
