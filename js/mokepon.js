@@ -45,7 +45,18 @@ let canvas = map.getContext('2d')
 let interval
 let mapBackground = new Image()
 mapBackground.src = './assets/mokemap.jpg'
+let desiredHeight
+let widthMap = window.innerWidth - 20
+const widthMax = 750
 
+if(widthMap > widthMax){
+    widthMap = widthMax - 20
+}
+
+desiredHeight = widthMap * 350 / 700
+
+map.width = widthMap
+map.height = desiredHeight
 
 class Mokepon{
     constructor(name, image, life, Mapimage, width = 60, height = 60, x = 10, y = 10){
@@ -53,10 +64,10 @@ class Mokepon{
         this.image = image
         this.life = life
         this.attacks = []
-        this.x = x
-        this.y = y
         this.width = width
         this.height = height
+        this.x = x
+        this.y = y
         this.imageInMap = new Image()
         this.imageInMap.src = Mapimage
         this.speedX = 0
@@ -79,12 +90,12 @@ let zerox = new Mokepon('Zerox', './assets/zerox.png', 5, './assets/zeroxMap.png
 let rasfas = new Mokepon('Rasfas', './assets/rasfas.png', 5, './assets/rasfasMap1.png', 80, 60)
 let sesbos = new Mokepon('Sesbos', './assets/sesbos.png', 5, './assets/sesbosMap.png')
 
-let fistyEnemy = new Mokepon('Fisty', './assets/fisty.png', 3, './assets/fistyMap.png',60 ,60 ,generateRandomNumber(20, 460), generateRandomNumber(20, 280))
-let goratEnemy = new Mokepon('Gorat', './assets/Gorat.png', 3, './assets/goratMap.png',60 ,60,generateRandomNumber(20, 460), generateRandomNumber(20, 280))
-let esmelEnemy = new Mokepon('Esmel', './assets/esmel.png', 3, './assets/esmelMap.png',60 ,60 ,generateRandomNumber(20, 460), generateRandomNumber(20, 280))
-let zeroxEnemy = new Mokepon('Zerox', './assets/zerox.png', 5, './assets/zeroxMap.png', 80,60, generateRandomNumber(20, 460), generateRandomNumber(20, 280))
-let rasfasEnemy = new Mokepon('Rasfas', './assets/rasfas.png', 5, './assets/rasfasMap1.png', 80, 60, generateRandomNumber(20, 460), generateRandomNumber(20, 280))
-let sesbosEnemy = new Mokepon('Sesbos', './assets/sesbos.png', 5, './assets/sesbosMap.png',60,60, generateRandomNumber(20, 460), generateRandomNumber(20, 280))
+let fistyEnemy = new Mokepon('Fisty', './assets/fisty.png', 3, './assets/fistyMap.png',60 ,60 ,generateRandomNumber(20, map.width - 60), generateRandomNumber(20, map.height - 60))
+let goratEnemy = new Mokepon('Gorat', './assets/Gorat.png', 3, './assets/goratMap.png',60 ,60,generateRandomNumber(20, map.width - 60), generateRandomNumber(20, map.height - 60))
+let esmelEnemy = new Mokepon('Esmel', './assets/esmel.png', 3, './assets/esmelMap.png',60 ,60 ,generateRandomNumber(20, map.width - 60), generateRandomNumber(20, map.height - 60))
+let zeroxEnemy = new Mokepon('Zerox', './assets/zerox.png', 5, './assets/zeroxMap.png', 80,60, generateRandomNumber(20, map.width - 80), generateRandomNumber(20, map.height - 60))
+let rasfasEnemy = new Mokepon('Rasfas', './assets/rasfas.png', 5, './assets/rasfasMap1.png', 80, 60, generateRandomNumber(20, map.width - 80), generateRandomNumber(20, map.height - 60))
+let sesbosEnemy = new Mokepon('Sesbos', './assets/sesbos.png', 5, './assets/sesbosMap.png',60,60, generateRandomNumber(20, map.width - 60), generateRandomNumber(20, map.height - 60))
 
 fisty.attacks.push(
     { name: 'Water 💧', id: 'water-attack' },
@@ -122,6 +133,49 @@ rasfas.attacks.push(
     { name: 'Fire 🔥', id: 'fire-attack' }
 )
 sesbos.attacks.push(
+    { name: 'Fire 🔥', id: 'fire-attack' },
+    { name: 'Fire 🔥', id: 'fire-attack' },
+    { name: 'Ground 🌱', id: 'ground-attack' },
+    { name: 'Ground 🌱', id: 'ground-attack' },
+    { name: 'Water 💧', id: 'water-attack' }
+)
+
+fistyEnemy.attacks.push(
+    { name: 'Water 💧', id: 'water-attack' },
+    { name: 'Water 💧', id: 'water-attack' },
+    { name: 'Water 💧', id: 'water-attack' },
+    { name: 'Fire 🔥', id: 'fire-attack' },
+    { name: 'Ground 🌱', id: 'ground-attack'}
+)
+goratEnemy.attacks.push(
+    { name: 'Fire 🔥', id: 'fire-attack' },
+    { name: 'Fire 🔥', id: 'fire-attack' },
+    { name: 'Fire 🔥', id: 'fire-attack' },
+    { name: 'Water 💧', id: 'water-attack' },
+    { name: 'Ground 🌱', id: 'ground-attack' }
+)
+esmelEnemy.attacks.push(
+    { name: 'Ground 🌱', id: 'ground-attack' },
+    { name: 'Ground 🌱', id: 'ground-attack' },
+    { name: 'Ground 🌱', id: 'ground-attack' },
+    { name: 'Fire 🔥', id: 'fire-attack' },
+    { name: 'Water 💧', id: 'water-attack' }
+)
+zeroxEnemy.attacks.push(
+    { name: 'Water 💧', id: 'water-attack' },
+    { name: 'Water 💧', id: 'water-attack' },
+    { name: 'Fire 🔥', id: 'fire-attack' },
+    { name: 'Fire 🔥', id: 'fire-attack' },
+    { name: 'Ground 🌱', id: 'ground-attack' }
+)
+rasfasEnemy.attacks.push(
+    { name: 'Water 💧', id: 'water-attack' },
+    { name: 'Water 💧', id: 'water-attack' },
+    { name: 'Ground 🌱', id: 'ground-attack' },
+    { name: 'Ground 🌱', id: 'ground-attack' },
+    { name: 'Fire 🔥', id: 'fire-attack' }
+)
+sesbosEnemy.attacks.push(
     { name: 'Fire 🔥', id: 'fire-attack' },
     { name: 'Fire 🔥', id: 'fire-attack' },
     { name: 'Ground 🌱', id: 'ground-attack' },
@@ -188,9 +242,6 @@ const mokeponSelect = () => {
     }else{
         alert('Selecciona una mascota')
     }
-
-    generateRandomMokepon()
-
     buscarAtaques(playerMokepon)
 }
 
@@ -199,8 +250,6 @@ const showSections = () => {
     mokeponSelectionContainer.style.display = 'none'
     mapContainer.style.display = 'flex'
     
-    //attackSelectionContainer.style.display = 'flex'
-    optionsContainer.hidden = false
     initMap()
 }
 
@@ -257,29 +306,28 @@ const attackSequence = () =>{
     })
 }
 
-const generateRandomMokepon = () => {
-    randomMokeponSelection = generateRandomNumber(0, mokepons.length -1)
-    randomMokepon.innerHTML = mokepons[randomMokeponSelection].name
-    botAttacks = mokepons[randomMokeponSelection].attacks
+const generateEnemyMokepon = (enemy) => {
+    randomMokepon.innerHTML = enemy.name
+    botAttacks = enemy.attacks
 }
 
 const generateRandomAttack = () => {
-    let randomAttack = generateRandomNumber(0, botAttacks.length -1)
+    let randomAttack = generateRandomNumber(0, botAttacks.length)
     if(mokepons[0] || mokepons[1] || mokepons[2]){
         if(randomAttack == 0 || randomAttack == 1  || randomAttack == 2){
-            botAttackSequence.push(mokepons[randomMokeponSelection].attacks[0].name)
+            botAttackSequence.push(botAttacks[0].name)
         }else if(randomAttack == 3){
-            botAttackSequence.push(mokepons[randomMokeponSelection].attacks[3].name)
+            botAttackSequence.push(botAttacks[3].name)
         }else{
-            botAttackSequence.push(mokepons[randomMokeponSelection].attacks[4].name)
+            botAttackSequence.push(botAttacks[4].name)
         }
     }else{
         if(randomAttack == 0 || randomAttack == 1  ){
-            botAttackSequence.push(mokepons[randomMokeponSelection].attacks[0].name)
+            botAttackSequence.push(botAttacks[0].name)
         }else if(randomAttack == 2 || randomAttack == 3){
-            botAttackSequence.push(mokepons[randomMokeponSelection].attacks[2].name)
+            botAttackSequence.push(botAttacks[2].name)
         }else{
-            botAttackSequence.push(mokepons[randomMokeponSelection].attacks[4].name)
+            botAttackSequence.push(botAttacks[4].name)
         }
     }
     
@@ -351,8 +399,8 @@ const restartGame = () =>{
 }
 
 const paintCanvas = () =>{
-    mokeponSelected.x = mokeponSelected.x + mokeponSelected.speedX
-    mokeponSelected.y = mokeponSelected.y + mokeponSelected.speedY
+    mokeponSelected.x += mokeponSelected.speedX
+    mokeponSelected.y += mokeponSelected.speedY
     canvas.clearRect(0, 0, map.width, map.height)
     canvas.drawImage(mapBackground, 0, 0, map.width, map.height)
     mokeponSelected.paintMokepon()
@@ -362,6 +410,12 @@ const paintCanvas = () =>{
     zeroxEnemy.paintMokepon()
     rasfasEnemy.paintMokepon()
     sesbosEnemy.paintMokepon()
+    checkCollision(fistyEnemy)
+    checkCollision(goratEnemy)
+    checkCollision(esmelEnemy)
+    checkCollision(zeroxEnemy)
+    checkCollision(rasfasEnemy)
+    checkCollision(sesbosEnemy)
 }
 
 const moveUp = () =>{
@@ -406,8 +460,6 @@ const keyPressed = (event) =>{
 }
 const initMap = () =>{
     mokeponSelected = getSelectedMokepon()
-    map.width = 520
-    map.height = 340
     interval = setInterval(paintCanvas, 40)
     window.addEventListener('keydown', keyPressed)
     window.addEventListener('keyup', stopMotion)
@@ -419,6 +471,28 @@ const getSelectedMokepon = () =>{
             return mokepons[i]
         }   
     }
+}
+
+const checkCollision = (enemy) =>{
+    const upPet = mokeponSelected.y+20
+    const downPet = mokeponSelected.y + mokeponSelected.height-20
+    const leftPet = mokeponSelected.x +20
+    const rightPet = mokeponSelected.x + mokeponSelected.width-20
+
+    const upEnemy = enemy.y
+    const downEnemy = enemy.y + enemy.height
+    const leftEnemy = enemy.x
+    const rightEnemy = enemy.x + enemy.width
+
+    if(downPet < upEnemy || upPet > downEnemy || rightPet < leftEnemy || leftPet > rightEnemy){
+        return
+    }
+    stopMotion()
+    clearInterval(interval)
+    generateEnemyMokepon(enemy)
+    mapContainer.style.display = 'none'
+    attackSelectionContainer.style.display = 'grid'
+    optionsContainer.hidden = false
 }
 
 window.addEventListener('load', initializeGame)

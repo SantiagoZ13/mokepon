@@ -162,11 +162,8 @@ h1{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    
 }
-.map{
-    border: 0.2rem solid white;
-}
+
 .img-arrow{ 
     cursor: pointer;
     width: 5rem;
