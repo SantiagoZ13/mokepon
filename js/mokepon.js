@@ -211,7 +211,20 @@ const initializeGame = () => {
 
     btnMokeponSelection.addEventListener('click', mokeponSelect)
     btnRestart.addEventListener('click', restartGame)
-    
+
+    joinGame()
+}
+
+const joinGame = () =>{
+    fetch('http://localhost:8080/join')
+        .then(function (res){
+            if(res.ok){
+                res.text()
+                    .then(function(result){
+                        console.log(result)
+                    })
+            }
+        })
 }
 
 const mokeponSelect = () => {
