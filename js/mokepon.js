@@ -16,6 +16,7 @@ const map = document.getElementById('map')
 
 let enemysMokepons = []
 let playerId = null
+let enemyId = null
 let mokeponSelected
 let botAttacks = []
 let buttons = []
@@ -295,8 +296,40 @@ const attackSequence = () =>{
             boton.classList.add('btn-usado')
             boton.disabled = true
            }
-           generateRandomAttack()
+           if(playerAttack === 5){
+            sendAttacks()
+           }
+            
         })
+    })
+}
+
+const sendAttacks = ()=>{
+    fetch(`http://localhost:8080/mokepon/${playerId}/attacks`,{
+        method: 'post',
+        headers: {
+            "Content-Type": 'application/json'
+        },
+        body: JSON.stringify({
+            attacks: playerAttack
+        })
+    })
+
+    interval = setInterval(getEnemyAttacks, 50)
+}
+
+const getEnemyAttacks = () =>{
+    fetch(`http://localhost:8080/mokepon/${enemyId}/attacks`)
+    .then(function (res){
+        if(res.ok){
+            res.json()
+            .then(function({attacks}){
+                if(attacks.length === 5){
+                    botAttackSequence = attacks
+                    combat(playerAttack, botAttackSequence)
+                }
+            })
+        }
     })
 }
 
@@ -335,7 +368,7 @@ const guardarVariables = (index) =>{
 }
 
 const combat = (arrayPlayer, arrayBot) =>{
-    
+        clearInterval(interval)
         if (arrayPlayer[i] === arrayBot[i]) {
             guardarVariables(i)
             figthMessage()
@@ -432,15 +465,15 @@ const sendPosition = (x, y)=>{
                     let enemyMokepon = null
                     const mokeponName = enemy.mokepon.name || ''
                     if(mokeponName === 'Fisty'){
-                        enemyMokepon = new Mokepon('Fisty', './assets/fisty.png', 3, './assets/fistyMap.png',60 ,60 )
+                        enemyMokepon = new Mokepon('Fisty', './assets/fisty.png', 3, './assets/fistyMap.png',60 ,60, enemy.id)
                     }else if(mokeponName === 'Gorat'){
-                        enemyMokepon = new Mokepon('Gorat', './assets/Gorat.png', 3, './assets/goratMap.png',60 ,60)        
+                        enemyMokepon = new Mokepon('Gorat', './assets/Gorat.png', 3, './assets/goratMap.png',60 ,60, enemy.id)        
                     }else if(mokeponName === 'Esmel'){
-                        enemyMokepon = new Mokepon('Esmel', './assets/esmel.png', 3, './assets/esmelMap.png',60 ,60 )
+                        enemyMokepon = new Mokepon('Esmel', './assets/esmel.png', 3, './assets/esmelMap.png',60 ,60, enemy.id)
                     }else if(mokeponName === 'Zerox'){
-                        enemyMokepon = new Mokepon('Zerox', './assets/zerox.png', 5, './assets/zeroxMap.png', 80,60)
+                        enemyMokepon = new Mokepon('Zerox', './assets/zerox.png', 5, './assets/zeroxMap.png', 80,60, enemy.id)
                     }else if(mokeponName === 'Rasfas'){
-                        enemyMokepon = new Mokepon('Rasfas', './assets/rasfas.png', 5, './assets/rasfasMap1.png', 80, 60)
+                        enemyMokepon = new Mokepon('Rasfas', './assets/rasfas.png', 5, './assets/rasfasMap1.png', 80, 60, enemy.id)
                     }else if(mokeponName === 'Sesbos'){
                         enemyMokepon = new Mokepon('Sesbos', './assets/sesbos.png', 5, './assets/sesbosMap.png',60,60)
                     }
@@ -525,6 +558,7 @@ const checkCollision = (enemy) =>{
     }
     stopMotion()
     clearInterval(interval)
+    enemyId = enemy.id
     generateEnemyMokepon(enemy)
     mapContainer.style.display = 'none'
     attackSelectionContainer.style.display = 'grid'

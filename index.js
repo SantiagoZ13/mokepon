@@ -20,6 +20,9 @@ class Player{
         this.x = x
         this.y = y
     }
+    assignAttack(attacks){
+        this.attacks = attacks
+    }
 }
 
 class Mokepon {
@@ -54,6 +57,18 @@ app.post('/mokepon/:playerId', (req, res) =>{
     res.end()
 })
 
+app.post('/mokepon/:playerId/attacks', (req, res) =>{
+    const playerId = req.params.playerId || ''
+    const attacks = req.body.attacks || []
+    
+    const playerIndex = players.findIndex((player) => playerId === player.id)
+
+    if (playerIndex >= 0 ){
+        players[playerIndex].assignAttack(attacks)
+    }
+    res.end()
+})
+
 app.post('/mokepon/:playerId/position', (req, res) => {
     const playerId = req.params.playerId || ''
     const x = req.body.x || 0
@@ -67,6 +82,14 @@ app.post('/mokepon/:playerId/position', (req, res) => {
     const enemys = players.filter((player) => playerId !== player.id)
     res.send({
         enemys
+    })
+})
+
+app.get('/mokepon/:playerId/attacks', (req, res) =>{
+    const playerId = req.params.playerId || ''
+    const player = players.find((player) => player.id === playerId)
+    res.send({
+        attacks: player.attacks || []
     })
 })
 
