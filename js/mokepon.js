@@ -14,6 +14,8 @@ const btnRestart = document.getElementById("btn-restart")
 const mapContainer = document.getElementById('map-section')
 const map = document.getElementById('map')
 
+let enemysMokepons = []
+let playerId = null
 let mokeponSelected
 let botAttacks = []
 let buttons = []
@@ -59,15 +61,16 @@ map.width = widthMap
 map.height = desiredHeight
 
 class Mokepon{
-    constructor(name, image, life, Mapimage, width = 60, height = 60, x = 10, y = 10){
+    constructor(name, image, life, Mapimage, width = 60, height = 60, id){
+        this.id = id
         this.name = name
         this.image = image
         this.life = life
         this.attacks = []
         this.width = width
         this.height = height
-        this.x = x
-        this.y = y
+        this.x = generateRandomNumber(0, map.width - 80)
+        this.y = generateRandomNumber(0, map.height - 60)
         this.imageInMap = new Image()
         this.imageInMap.src = Mapimage
         this.speedX = 0
@@ -90,98 +93,60 @@ let zerox = new Mokepon('Zerox', './assets/zerox.png', 5, './assets/zeroxMap.png
 let rasfas = new Mokepon('Rasfas', './assets/rasfas.png', 5, './assets/rasfasMap1.png', 80, 60)
 let sesbos = new Mokepon('Sesbos', './assets/sesbos.png', 5, './assets/sesbosMap.png')
 
-let fistyEnemy = new Mokepon('Fisty', './assets/fisty.png', 3, './assets/fistyMap.png',60 ,60 ,generateRandomNumber(20, map.width - 60), generateRandomNumber(20, map.height - 60))
-let goratEnemy = new Mokepon('Gorat', './assets/Gorat.png', 3, './assets/goratMap.png',60 ,60,generateRandomNumber(20, map.width - 60), generateRandomNumber(20, map.height - 60))
-let esmelEnemy = new Mokepon('Esmel', './assets/esmel.png', 3, './assets/esmelMap.png',60 ,60 ,generateRandomNumber(20, map.width - 60), generateRandomNumber(20, map.height - 60))
-let zeroxEnemy = new Mokepon('Zerox', './assets/zerox.png', 5, './assets/zeroxMap.png', 80,60, generateRandomNumber(20, map.width - 80), generateRandomNumber(20, map.height - 60))
-let rasfasEnemy = new Mokepon('Rasfas', './assets/rasfas.png', 5, './assets/rasfasMap1.png', 80, 60, generateRandomNumber(20, map.width - 80), generateRandomNumber(20, map.height - 60))
-let sesbosEnemy = new Mokepon('Sesbos', './assets/sesbos.png', 5, './assets/sesbosMap.png',60,60, generateRandomNumber(20, map.width - 60), generateRandomNumber(20, map.height - 60))
-
-fisty.attacks.push(
+const fistyAttacks = [
     { name: 'Water 💧', id: 'water-attack' },
     { name: 'Water 💧', id: 'water-attack' },
     { name: 'Water 💧', id: 'water-attack' },
     { name: 'Fire 🔥', id: 'fire-attack' },
     { name: 'Ground 🌱', id: 'ground-attack'}
-)
-gorat.attacks.push(
-    { name: 'Fire 🔥', id: 'fire-attack' },
-    { name: 'Fire 🔥', id: 'fire-attack' },
-    { name: 'Fire 🔥', id: 'fire-attack' },
-    { name: 'Water 💧', id: 'water-attack' },
-    { name: 'Ground 🌱', id: 'ground-attack' }
-)
-esmel.attacks.push(
-    { name: 'Ground 🌱', id: 'ground-attack' },
-    { name: 'Ground 🌱', id: 'ground-attack' },
-    { name: 'Ground 🌱', id: 'ground-attack' },
-    { name: 'Fire 🔥', id: 'fire-attack' },
-    { name: 'Water 💧', id: 'water-attack' }
-)
-zerox.attacks.push(
-    { name: 'Water 💧', id: 'water-attack' },
-    { name: 'Water 💧', id: 'water-attack' },
-    { name: 'Fire 🔥', id: 'fire-attack' },
-    { name: 'Fire 🔥', id: 'fire-attack' },
-    { name: 'Ground 🌱', id: 'ground-attack' }
-)
-rasfas.attacks.push(
-    { name: 'Water 💧', id: 'water-attack' },
-    { name: 'Water 💧', id: 'water-attack' },
-    { name: 'Ground 🌱', id: 'ground-attack' },
-    { name: 'Ground 🌱', id: 'ground-attack' },
-    { name: 'Fire 🔥', id: 'fire-attack' }
-)
-sesbos.attacks.push(
-    { name: 'Fire 🔥', id: 'fire-attack' },
-    { name: 'Fire 🔥', id: 'fire-attack' },
-    { name: 'Ground 🌱', id: 'ground-attack' },
-    { name: 'Ground 🌱', id: 'ground-attack' },
-    { name: 'Water 💧', id: 'water-attack' }
-)
+]
+fisty.attacks.push(...fistyAttacks)
 
-fistyEnemy.attacks.push(
-    { name: 'Water 💧', id: 'water-attack' },
-    { name: 'Water 💧', id: 'water-attack' },
-    { name: 'Water 💧', id: 'water-attack' },
-    { name: 'Fire 🔥', id: 'fire-attack' },
-    { name: 'Ground 🌱', id: 'ground-attack'}
-)
-goratEnemy.attacks.push(
+const goratAttacks = [
     { name: 'Fire 🔥', id: 'fire-attack' },
     { name: 'Fire 🔥', id: 'fire-attack' },
     { name: 'Fire 🔥', id: 'fire-attack' },
     { name: 'Water 💧', id: 'water-attack' },
     { name: 'Ground 🌱', id: 'ground-attack' }
-)
-esmelEnemy.attacks.push(
+]
+gorat.attacks.push(...goratAttacks)
+
+const esmelAttacks = [
     { name: 'Ground 🌱', id: 'ground-attack' },
     { name: 'Ground 🌱', id: 'ground-attack' },
     { name: 'Ground 🌱', id: 'ground-attack' },
     { name: 'Fire 🔥', id: 'fire-attack' },
     { name: 'Water 💧', id: 'water-attack' }
-)
-zeroxEnemy.attacks.push(
+]
+esmel.attacks.push(...esmelAttacks)
+
+const zeroxAttacks = [
     { name: 'Water 💧', id: 'water-attack' },
     { name: 'Water 💧', id: 'water-attack' },
     { name: 'Fire 🔥', id: 'fire-attack' },
     { name: 'Fire 🔥', id: 'fire-attack' },
     { name: 'Ground 🌱', id: 'ground-attack' }
-)
-rasfasEnemy.attacks.push(
+]
+zerox.attacks.push(...zeroxAttacks)
+
+const rasfasAttacks = [
     { name: 'Water 💧', id: 'water-attack' },
     { name: 'Water 💧', id: 'water-attack' },
     { name: 'Ground 🌱', id: 'ground-attack' },
     { name: 'Ground 🌱', id: 'ground-attack' },
     { name: 'Fire 🔥', id: 'fire-attack' }
-)
-sesbosEnemy.attacks.push(
+]
+rasfas.attacks.push(...rasfasAttacks)
+
+const sesbosAttack = [
     { name: 'Fire 🔥', id: 'fire-attack' },
     { name: 'Fire 🔥', id: 'fire-attack' },
     { name: 'Ground 🌱', id: 'ground-attack' },
     { name: 'Ground 🌱', id: 'ground-attack' },
     { name: 'Water 💧', id: 'water-attack' }
-)
+]
+sesbos.attacks.push(...sesbosAttack)
+
 
 mokepons.push(fisty, gorat, esmel, zerox, rasfas, sesbos)
 
@@ -222,6 +187,7 @@ const joinGame = () =>{
                 res.text()
                     .then(function(result){
                         console.log(result)
+                        playerId = result
                     })
             }
         })
@@ -255,6 +221,9 @@ const mokeponSelect = () => {
     }else{
         alert('Selecciona una mascota')
     }
+
+    selectMokeponBackend(playerMokepon)
+
     buscarAtaques(playerMokepon)
 }
 
@@ -264,6 +233,18 @@ const showSections = () => {
     mapContainer.style.display = 'flex'
     
     initMap()
+}
+
+const selectMokeponBackend = (mokepon) =>{
+    fetch(`http://localhost:8080/mokepon/${playerId}`, {
+        method: 'post',
+        headers: {
+            "Content-Type": 'application/json'
+        },
+        body: JSON.stringify({
+            mokepon: mokepon
+        })
+    })
 }
 
 function buscarAtaques(playerMokepon){
@@ -417,18 +398,60 @@ const paintCanvas = () =>{
     canvas.clearRect(0, 0, map.width, map.height)
     canvas.drawImage(mapBackground, 0, 0, map.width, map.height)
     mokeponSelected.paintMokepon()
-    fistyEnemy.paintMokepon()
-    goratEnemy.paintMokepon()
-    esmelEnemy.paintMokepon()
-    zeroxEnemy.paintMokepon()
-    rasfasEnemy.paintMokepon()
-    sesbosEnemy.paintMokepon()
-    checkCollision(fistyEnemy)
-    checkCollision(goratEnemy)
-    checkCollision(esmelEnemy)
-    checkCollision(zeroxEnemy)
-    checkCollision(rasfasEnemy)
-    checkCollision(sesbosEnemy)
+
+    sendPosition(mokeponSelected.x, mokeponSelected.y)
+    enemysMokepons.forEach(function (mokepon){
+        mokepon.paintMokepon()
+        checkCollision(mokepon)
+    })
+    
+    if(mokeponSelect.speedX !== 0 || mokeponSelected.speedY !== 0 ){
+        
+    }
+    
+}
+
+const sendPosition = (x, y)=>{
+    fetch(`http://localhost:8080/mokepon/${playerId}/position`,{
+        method: 'post',
+        headers: {
+            "Content-Type": 'application/json'
+        },
+        body: JSON.stringify({
+            x, 
+            y
+        })
+    })
+    .then(function (res){
+        if(res.ok){
+            res.json()
+            .then(function ({ enemys }){
+                console.log(enemys)
+                
+                enemysMokepons = enemys.map((function(enemy){
+                    let enemyMokepon = null
+                    const mokeponName = enemy.mokepon.name || ''
+                    if(mokeponName === 'Fisty'){
+                        enemyMokepon = new Mokepon('Fisty', './assets/fisty.png', 3, './assets/fistyMap.png',60 ,60 )
+                    }else if(mokeponName === 'Gorat'){
+                        enemyMokepon = new Mokepon('Gorat', './assets/Gorat.png', 3, './assets/goratMap.png',60 ,60)        
+                    }else if(mokeponName === 'Esmel'){
+                        enemyMokepon = new Mokepon('Esmel', './assets/esmel.png', 3, './assets/esmelMap.png',60 ,60 )
+                    }else if(mokeponName === 'Zerox'){
+                        enemyMokepon = new Mokepon('Zerox', './assets/zerox.png', 5, './assets/zeroxMap.png', 80,60)
+                    }else if(mokeponName === 'Rasfas'){
+                        enemyMokepon = new Mokepon('Rasfas', './assets/rasfas.png', 5, './assets/rasfasMap1.png', 80, 60)
+                    }else if(mokeponName === 'Sesbos'){
+                        enemyMokepon = new Mokepon('Sesbos', './assets/sesbos.png', 5, './assets/sesbosMap.png',60,60)
+                    }
+                    enemyMokepon.x = enemy.x
+                    enemyMokepon.y = enemy.y
+                    
+                    return enemyMokepon
+                }))
+            })
+        }
+    })
 }
 
 const moveUp = () =>{
