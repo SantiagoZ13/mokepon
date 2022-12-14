@@ -43,7 +43,6 @@ let mokeponAttacks
 let randomMokeponSelection
 let playerAttackSelected
 let botAttackSelected
-let i = 0
 let canvas = map.getContext('2d')
 let interval
 let mapBackground = new Image()
@@ -62,7 +61,7 @@ map.width = widthMap
 map.height = desiredHeight
 
 class Mokepon{
-    constructor(name, image, life, Mapimage, width = 60, height = 60, id){
+    constructor(name, image, life, Mapimage, width = 60, height = 60, id = null){
         this.id = id
         this.name = name
         this.image = image
@@ -70,8 +69,8 @@ class Mokepon{
         this.attacks = []
         this.width = width
         this.height = height
-        this.x = generateRandomNumber(0, map.width - 80)
-        this.y = generateRandomNumber(0, map.height - 60)
+        this.x = generateRandomNumber(0, map.width - this.width)
+        this.y = generateRandomNumber(0, map.height - this.height)
         this.imageInMap = new Image()
         this.imageInMap.src = Mapimage
         this.speedX = 0
@@ -166,14 +165,13 @@ const initializeGame = () => {
         `
 
         cardsContainer.innerHTML += mokeponStructure
+        inputFisty = document.getElementById('Fisty')
+        inputGorat = document.getElementById('Gorat')
+        inputEsmel = document.getElementById('Esmel')
+        inputZerox = document.getElementById('Zerox')
+        inputRasfas = document.getElementById('Rasfas')
+        inputSesbos = document.getElementById('Sesbos')
     })
-
-    inputFisty = document.getElementById('Fisty')
-    inputGorat = document.getElementById('Gorat')
-    inputEsmel = document.getElementById('Esmel')
-    inputZerox = document.getElementById('Zerox')
-    inputRasfas = document.getElementById('Rasfas')
-    inputSesbos = document.getElementById('Sesbos')
 
     btnMokeponSelection.addEventListener('click', mokeponSelect)
     btnRestart.addEventListener('click', restartGame)
@@ -221,6 +219,7 @@ const mokeponSelect = () => {
         showSections()
     }else{
         alert('Selecciona una mascota')
+        return
     }
 
     selectMokeponBackend(playerMokepon)
@@ -236,14 +235,14 @@ const showSections = () => {
     initMap()
 }
 
-const selectMokeponBackend = (mokepon) =>{
+const selectMokeponBackend = (playerMokepon) =>{
     fetch(`http://localhost:8080/mokepon/${playerId}`, {
         method: 'post',
         headers: {
-            "Content-Type": 'application/json'
+            "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            mokepon: mokepon
+            mokepon: playerMokepon
         })
     })
 }
@@ -256,7 +255,6 @@ function buscarAtaques(playerMokepon){
         }   
     }
     showAttacks(attacksPlayer)
-    
 }
 
 function showAttacks(attacks){
@@ -267,7 +265,6 @@ function showAttacks(attacks){
         attackContainer.innerHTML += mokeponAttacks
     })
     buttons = document.querySelectorAll('.attack-btn')
-
     btnWater = document.getElementById('water-attack')
     btnFire = document.getElementById('fire-attack')
     btnGround = document.getElementById('ground-attack')
@@ -296,10 +293,9 @@ const attackSequence = () =>{
             boton.classList.add('btn-usado')
             boton.disabled = true
            }
-           if(playerAttack === 5){
+           if(playerAttack.length === 5){
             sendAttacks()
            }
-            
         })
     })
 }
@@ -308,13 +304,12 @@ const sendAttacks = ()=>{
     fetch(`http://localhost:8080/mokepon/${playerId}/attacks`,{
         method: 'post',
         headers: {
-            "Content-Type": 'application/json'
+            "Content-Type": "application/json"
         },
         body: JSON.stringify({
             attacks: playerAttack
         })
     })
-
     interval = setInterval(getEnemyAttacks, 50)
 }
 
@@ -323,7 +318,7 @@ const getEnemyAttacks = () =>{
     .then(function (res){
         if(res.ok){
             res.json()
-            .then(function({attacks}){
+            .then(function({ attacks }){
                 if(attacks.length === 5){
                     botAttackSequence = attacks
                     combat(playerAttack, botAttackSequence)
@@ -359,7 +354,13 @@ const generateRandomAttack = () => {
     }
     
     console.log(botAttackSequence)
-    combat(playerAttack, botAttackSequence)
+    initBattle()
+}
+
+const initBattle = () => {
+    if(playerAttack.length === 5){
+        combat(playerAttack, botAttackSequence)
+    }
 }
 
 const guardarVariables = (index) =>{
@@ -369,26 +370,23 @@ const guardarVariables = (index) =>{
 
 const combat = (arrayPlayer, arrayBot) =>{
         clearInterval(interval)
-        if (arrayPlayer[i] === arrayBot[i]) {
-            guardarVariables(i)
-            figthMessage()
-        }else if((arrayPlayer[i] === 'Water 💧' && arrayBot[i] === 'Fire 🔥') || (arrayPlayer[i] === 'Fire 🔥' && arrayBot[i] === 'Ground 🌱') || (arrayPlayer[i] === 'Ground 🌱' && arrayBot[i] === 'Water 💧')){
-            guardarVariables(i)
-            figthMessage()
-            playerVictories++
-            spanPlayerLives.innerHTML = playerVictories
-        }else{
-            guardarVariables(i)
-            figthMessage()
-            botVictories++
-            spanBotLives.innerHTML = botVictories
+        for(let i = 0; i < playerAttack.length; i++){
+            if (arrayPlayer[i] === arrayBot[i]) {
+                guardarVariables(i)
+                figthMessage()
+            }else if((arrayPlayer[i] === 'Water 💧' && arrayBot[i] === 'Fire 🔥') || (arrayPlayer[i] === 'Fire 🔥' && arrayBot[i] === 'Ground 🌱') || (arrayPlayer[i] === 'Ground 🌱' && arrayBot[i] === 'Water 💧')){
+                guardarVariables(i)
+                figthMessage()
+                playerVictories++
+                spanPlayerLives.innerHTML = playerVictories
+            }else{
+                guardarVariables(i)
+                figthMessage()
+                botVictories++
+                spanBotLives.innerHTML = botVictories
+            }
         }
-        i++
-
-        if (arrayPlayer.length == 5) {
-            evaluateWin()        
-        }
-    
+        evaluateWin()
 }
 
 const figthMessage = () =>{     
