@@ -180,7 +180,7 @@ const initializeGame = () => {
 }
 
 const joinGame = () =>{
-    fetch('http://localhost:8080/join')
+    fetch('http://192.168.0.13:8080/join')
         .then(function (res){
             if(res.ok){
                 res.text()
@@ -236,7 +236,7 @@ const showSections = () => {
 }
 
 const selectMokeponBackend = (playerMokepon) =>{
-    fetch(`http://localhost:8080/mokepon/${playerId}`, {
+    fetch(`http://192.168.0.13:8080/mokepon/${playerId}`, {
         method: 'post',
         headers: {
             "Content-Type": "application/json"
@@ -301,7 +301,7 @@ const attackSequence = () =>{
 }
 
 const sendAttacks = ()=>{
-    fetch(`http://localhost:8080/mokepon/${playerId}/attacks`,{
+    fetch(`http://192.168.0.13:8080/mokepon/${playerId}/attacks`,{
         method: 'post',
         headers: {
             "Content-Type": "application/json"
@@ -314,7 +314,7 @@ const sendAttacks = ()=>{
 }
 
 const getEnemyAttacks = () =>{
-    fetch(`http://localhost:8080/mokepon/${enemyId}/attacks`)
+    fetch(`http://192.168.0.13:8080/mokepon/${enemyId}/attacks`)
     .then(function (res){
         if(res.ok){
             res.json()
@@ -443,7 +443,7 @@ const paintCanvas = () =>{
 }
 
 const sendPosition = (x, y)=>{
-    fetch(`http://localhost:8080/mokepon/${playerId}/position`,{
+    fetch(`http://192.168.0.13:8080/mokepon/${playerId}/position`,{
         method: 'post',
         headers: {
             "Content-Type": 'application/json'

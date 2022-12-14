@@ -22,14 +22,14 @@
             
         <canvas id="map" class="map"></canvas>
         <div>
-            <img onmouseup="stopMotion()" onmousedown="moveUp()" class="img-arrow up" src="./assets/arrow.png" alt="up arrow">
+            <img ontouchend="stopMotion()" ontouchstart="moveUp()" onmouseup="stopMotion()" onmousedown="moveUp()" class="img-arrow up" src="./assets/arrow.png" alt="up arrow">
         </div>
         <div>
-            <img onmouseup="stopMotion()" onmousedown="moveLeft()" class="img-arrow left" src="./assets/arrow.png" alt="left arrow">
-            <img onmouseup="stopMotion()" onmousedown="moveRight()" class="img-arrow right" src="./assets/arrow.png" alt="rigth arrow">
+            <img ontouchend="stopMotion()" ontouchstart="moveLeft()" onmouseup="stopMotion()" onmousedown="moveLeft()" class="img-arrow left" src="./assets/arrow.png" alt="left arrow">
+            <img ontouchend="stopMotion()" ontouchstart="moveRight()" onmouseup="stopMotion()" onmousedown="moveRight()" class="img-arrow right" src="./assets/arrow.png" alt="rigth arrow">
         </div>
         <div>
-            <img onmouseup="stopMotion()" onmousedown="moveDown()" class="img-arrow down" src="./assets/arrow.png" alt="down arrow">
+            <img ontouchend="stopMotion()" ontouchstart="moveDown()" onmouseup="stopMotion()" onmousedown="moveDown()" class="img-arrow down" src="./assets/arrow.png" alt="down arrow">
         </div>
     </section>
     <section hidden="true" class="attack-section" id="attack-selection">
