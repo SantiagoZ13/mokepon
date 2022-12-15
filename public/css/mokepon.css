@@ -38,7 +38,7 @@ h1{
 }
 .mokepon-section .cards-container{
     display: grid;
-    grid-template-columns: repeat(3, 1fr); 
+    grid-template-columns: repeat(4, 1fr); 
     grid-template-rows: repeat(2, 1fr);
 }
 .mokepon-section .cards-container input{
@@ -183,6 +183,12 @@ h1{
 }
 .down{
     rotate: 90deg
+}
+@media (max-width: 850px){
+    .mokepon-section .cards-container{
+        grid-template-columns: repeat(3, 1fr); 
+        grid-template-rows: repeat(2, 1fr);
+    }
 }
 @media (max-width: 625px){
     .mokepon-section .cards-container{

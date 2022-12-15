@@ -92,6 +92,26 @@ let esmel = new Mokepon('Esmel', './assets/esmel.png', 3, './assets/esmelMap.png
 let zerox = new Mokepon('Zerox', './assets/zerox.png', 5, './assets/zeroxMap.png', 80, 60)
 let rasfas = new Mokepon('Rasfas', './assets/rasfas.png', 5, './assets/rasfasMap1.png', 80, 60)
 let sesbos = new Mokepon('Sesbos', './assets/sesbos.png', 5, './assets/sesbosMap.png')
+let miu = new Mokepon('Miu', './assets/miu.png', 10, './assets/miuMap.png')
+let squirtle = new Mokepon('Squirtle', './assets/squirtle.png', 7, './assets/squirtleMap.png')
+
+const squirtleAttacks = [
+    { name: 'Water 💧', id: 'water-attack' },
+    { name: 'Water 💧', id: 'water-attack' },
+    { name: 'Fire 🔥', id: 'fire-attack' },
+    { name: 'Ground 🌱', id: 'ground-attack'},
+    { name: 'Ground 🌱', id: 'ground-attack'}
+]
+squirtle.attacks.push(...squirtleAttacks)
+
+const miuAttacks = [
+    { name: 'Water 💧', id: 'water-attack' },
+    { name: 'Fire 🔥', id: 'fire-attack' },
+    { name: 'Fire 🔥', id: 'fire-attack' },
+    { name: 'Ground 🌱', id: 'ground-attack'},
+    { name: 'Ground 🌱', id: 'ground-attack'}
+]
+miu.attacks.push(...miuAttacks)
 
 const fistyAttacks = [
     { name: 'Water 💧', id: 'water-attack' },
@@ -148,7 +168,7 @@ const sesbosAttack = [
 sesbos.attacks.push(...sesbosAttack)
 
 
-mokepons.push(fisty, gorat, esmel, zerox, rasfas, sesbos)
+mokepons.push(fisty, gorat, esmel, zerox, rasfas, sesbos, miu, squirtle)
 
 const initializeGame = () => {
 
@@ -171,6 +191,8 @@ const initializeGame = () => {
         inputZerox = document.getElementById('Zerox')
         inputRasfas = document.getElementById('Rasfas')
         inputSesbos = document.getElementById('Sesbos')
+        inputMiu = document.getElementById('Miu')
+        inputSquirtle = document.getElementById('Squirtle')
     })
 
     btnMokeponSelection.addEventListener('click', mokeponSelect)
@@ -216,6 +238,14 @@ const mokeponSelect = () => {
     }else if(inputSesbos.checked){
         playerMokeponName.innerHTML = inputSesbos.id
         playerMokepon = inputSesbos.id
+        showSections()
+    }else if(inputMiu.checked){
+        playerMokeponName.innerHTML = inputMiu.id
+        playerMokepon = inputMiu.id
+        showSections()
+    }else if(inputSquirtle.checked){
+        playerMokeponName.innerHTML = inputSquirtle.id
+        playerMokepon = inputSquirtle.id
         showSections()
     }else{
         alert('Selecciona una mascota')
@@ -474,6 +504,10 @@ const sendPosition = (x, y)=>{
                         enemyMokepon = new Mokepon('Rasfas', './assets/rasfas.png', 5, './assets/rasfasMap1.png', 80, 60, enemy.id)
                     }else if(mokeponName === 'Sesbos'){
                         enemyMokepon = new Mokepon('Sesbos', './assets/sesbos.png', 5, './assets/sesbosMap.png',60,60)
+                    }else if(mokeponName === 'Miu'){
+                        enemyMokepon = new Mokepon('Miu', './assets/miu.png', 10, './assets/miuMap.png',60,60)
+                    }else if(mokeponName === 'Squirtle'){
+                        enemyMokepon = new Mokepon('Squirtle', './assets/squirtle.png', 10, './assets/squirtleMap.png',60,60)
                     }
                     enemyMokepon.x = enemy.x
                     enemyMokepon.y = enemy.y
