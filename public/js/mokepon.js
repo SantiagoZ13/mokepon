@@ -47,6 +47,16 @@ let playerAttackSelected
 let botAttackSelected
 let canvas = map.getContext('2d')
 let interval
+
+let messageMissionBelow = new Image
+messageMissionBelow.src = './assets/messageBelow.png'
+
+let pressEnter = false
+let initialMap = true
+let houseInside = false
+let forestAdove = false
+let forestBelow = false
+
 let mapBackground = new Image()
 mapBackground.src = './assets/mokemap.jpg'
 let desiredHeight
@@ -58,7 +68,6 @@ if(widthMap > widthMax){
 }
 
 desiredHeight = widthMap * 350 / 700
-
 map.width = widthMap
 map.height = desiredHeight
 
@@ -173,7 +182,6 @@ miu.attacks.push(...miuAttacks)
 mokepons.push(fisty, gorat, esmel, zerox, rasfas, sesbos, miu, squirtle)
 
 const initializeGame = () => {
-
     mapContainer.style.display = 'none'
     attackSelectionContainer.style.display = 'none'
 
@@ -468,7 +476,7 @@ const paintCanvas = () =>{
     })
     
     if(mokeponSelect.speedX !== 0 || mokeponSelected.speedY !== 0 ){
-        
+        validateActionChangeMap()
     }
     
 }
@@ -556,6 +564,10 @@ const keyPressed = (event) =>{
         case 's':
             moveDown()
             break;
+        case 'Enter':
+        case ' ':
+            pressEnter = true
+            break;
         default:
             break;
     }
@@ -589,6 +601,7 @@ const checkCollision = (enemy) =>{
     if(downPet < upEnemy || upPet > downEnemy || rightPet < leftEnemy || leftPet > rightEnemy){
         return
     }
+
     stopMotion()
     clearInterval(interval)
     enemyId = enemy.id
@@ -596,6 +609,52 @@ const checkCollision = (enemy) =>{
     mapContainer.style.display = 'none'
     attackSelectionContainer.style.display = 'grid'
     optionsContainer.hidden = false
+}
+
+const validateActionChangeMap = () =>{
+    if(initialMap){
+        if((mokeponSelected.x > ((map.width/2)-120) && mokeponSelected.x < ((map.width/2-60))) && (mokeponSelected.y > ((map.height/2)-30) && mokeponSelected.y < (map.height/2)+30) && pressEnter && initialMap){
+            changeMap('./assets/secretmap.png', ((map.width/2)+17), 10)
+            houseInside = true
+            initialMap = false
+        }else if(mokeponSelected.y < -30 && mokeponSelected.x > ((map.width/2)+60) && mokeponSelected.x < map.width-60){
+            changeMap('./assets/mokemap2.jpg', mokeponSelected.x, (map.height-60))
+            forestAdove = true
+            initialMap = false
+        }else if(mokeponSelected.y > map.height-30 && mokeponSelected.x > ((map.width/2)-180) && mokeponSelected.x < map.width-400){
+            changeMap('./assets/mokemap4.jpg', mokeponSelected.x, 0)
+            forestBelow = true
+            initialMap = false
+        }
+    }else if(houseInside){
+        if(mokeponSelected.y < -30 && mokeponSelected.x > (map.width/2) && mokeponSelected.x < (map.width/2)+60){
+            changeMap('./assets/mokemap.jpg', (map.width/2-80), ((map.height/2)-15))
+            initialMap = true
+            houseInside = false
+        }
+        pressEnter = false
+    }else if(forestAdove){
+        if(mokeponSelected.y > map.height-30 && mokeponSelected.x > 0 && mokeponSelected.x < map.width){
+            changeMap('./assets/mokemap.jpg', mokeponSelected.x, 0)
+            initialMap = true
+            forestAdove = false
+        }
+    }else if(forestBelow){
+        if(mokeponSelected.y > (map.height/2-60) && mokeponSelected.y < (map.height/2+60) && mokeponSelected.x > (map.width/2-60) && mokeponSelected.x < (map.width/2+60)){
+            canvas.drawImage(messageMissionBelow, (map.width/2+20),(map.height/4), 150,150);
+            console.log('aqui')
+        }else if(mokeponSelected.y < -30 && mokeponSelected.x > 0 && mokeponSelected.x < map.width){
+            changeMap('./assets/mokemap.jpg', mokeponSelected.x, (map.height-60))
+            initialMap = true
+            forestBelow = false
+        }
+    }
+}
+
+const changeMap = (imageMap, x, y) => {
+    mapBackground.src = imageMap
+    mokeponSelected.x = x 
+    mokeponSelected.y = y
 }
 
 window.addEventListener('load', initializeGame)
