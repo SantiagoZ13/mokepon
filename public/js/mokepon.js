@@ -52,6 +52,7 @@ let messageMissionBelow = new Image
 messageMissionBelow.src = './assets/messageBelow.png'
 
 let pressEnter = false
+let pressSpace = false
 let initialMap = true
 let houseInside = false
 let forestAdove = false
@@ -72,7 +73,7 @@ map.width = widthMap
 map.height = desiredHeight
 
 class Mokepon{
-    constructor(name, image, life, Mapimage, width = 60, height = 60, id = null){
+    constructor(name, image, life, mapImage, width = 60, height = 60, id = null){
         this.id = id
         this.name = name
         this.image = image
@@ -83,7 +84,7 @@ class Mokepon{
         this.x = generateRandomNumber(0, map.width - this.width)
         this.y = generateRandomNumber(0, map.height - this.height)
         this.imageInMap = new Image()
-        this.imageInMap.src = Mapimage
+        this.imageInMap.src = mapImage
         this.speedX = 0
         this.speedY = 0
     }
@@ -565,8 +566,10 @@ const keyPressed = (event) =>{
             moveDown()
             break;
         case 'Enter':
-        case ' ':
             pressEnter = true
+            break;
+        case ' ':
+            pressSpace = true
             break;
         default:
             break;
@@ -613,46 +616,69 @@ const checkCollision = (enemy) =>{
 
 const validateActionChangeMap = () =>{
     if(initialMap){
-        if((mokeponSelected.x > ((map.width/2)-120) && mokeponSelected.x < ((map.width/2-60))) && (mokeponSelected.y > ((map.height/2)-30) && mokeponSelected.y < (map.height/2)+30) && pressEnter && initialMap){
+        if((mokeponSelected.x > ((map.width/2)-120) && mokeponSelected.x < ((map.width/2-60))) && (mokeponSelected.y > ((map.height/2)-30) && mokeponSelected.y < (map.height/2)+30) && pressEnter){
             changeMap('./assets/secretmap.png', ((map.width/2)+17), 10)
             houseInside = true
             initialMap = false
-        }else if(mokeponSelected.y < -30 && mokeponSelected.x > ((map.width/2)+60) && mokeponSelected.x < map.width-60){
+        }else if(mokeponSelected.y < 0 && mokeponSelected.x > ((map.width/2)+60) && mokeponSelected.x < map.width-60){
             changeMap('./assets/mokemap2.jpg', mokeponSelected.x, (map.height-60))
             forestAdove = true
             initialMap = false
-        }else if(mokeponSelected.y > map.height-30 && mokeponSelected.x > ((map.width/2)-180) && mokeponSelected.x < map.width-400){
+        }else if(mokeponSelected.y > map.height-60 && mokeponSelected.x > ((map.width/2)-180) && mokeponSelected.x < map.width-400){
             changeMap('./assets/mokemap4.jpg', mokeponSelected.x, 0)
             forestBelow = true
             initialMap = false
+        }else{
+            mapLimit()
         }
     }else if(houseInside){
-        if(mokeponSelected.y < -30 && mokeponSelected.x > (map.width/2) && mokeponSelected.x < (map.width/2)+60){
+        if(mokeponSelected.y < 0 && mokeponSelected.x > (map.width/2) && mokeponSelected.x < (map.width/2)+60){
             changeMap('./assets/mokemap.jpg', (map.width/2-80), ((map.height/2)-15))
             initialMap = true
             houseInside = false
+        }else{
+            mapLimit()
         }
         pressEnter = false
     }else if(forestAdove){
-        if(mokeponSelected.y > map.height-30 && mokeponSelected.x > 0 && mokeponSelected.x < map.width){
+        if(mokeponSelected.y > map.height-60 && mokeponSelected.x > 0 && mokeponSelected.x < map.width){
             changeMap('./assets/mokemap.jpg', mokeponSelected.x, 0)
             initialMap = true
             forestAdove = false
+        }else{
+            mapLimit()
         }
     }else if(forestBelow){
         if(mokeponSelected.y > (map.height/2-60) && mokeponSelected.y < (map.height/2+60) && mokeponSelected.x > (map.width/2-60) && mokeponSelected.x < (map.width/2+60)){
             canvas.drawImage(messageMissionBelow, (map.width/2+20),(map.height/4), 150,150);
-            console.log('aqui')
-        }else if(mokeponSelected.y < -30 && mokeponSelected.x > 0 && mokeponSelected.x < map.width){
+            if(pressSpace){
+                messageMissionBelow.src = './assets/messageBelow2.png'
+                pressSpace = false
+            }
+        }else if(mokeponSelected.y < 0 && mokeponSelected.x > 0 && mokeponSelected.x < map.width){
             changeMap('./assets/mokemap.jpg', mokeponSelected.x, (map.height-60))
             initialMap = true
             forestBelow = false
+        }else{
+            mapLimit()
         }
     }
 }
 
-const changeMap = (imageMap, x, y) => {
-    mapBackground.src = imageMap
+const mapLimit = () =>{
+    if(mokeponSelected.x < 0){
+        mokeponSelected.x = 0
+    }else if(mokeponSelected.x > map.width-60){
+        mokeponSelected.x = map.width-60
+    }else if(mokeponSelected.y < 0){
+        mokeponSelected.y = 0
+    }else if(mokeponSelected.y > map.height-60){
+        mokeponSelected.y = map.height-60
+    }
+}
+
+const changeMap = (mapImage, x, y) => {
+    mapBackground.src = mapImage
     mokeponSelected.x = x 
     mokeponSelected.y = y
 }
