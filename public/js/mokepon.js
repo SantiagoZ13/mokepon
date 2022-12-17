@@ -30,6 +30,8 @@ let inputEsmel
 let inputZerox
 let inputRasfas
 let inputSesbos
+let inputMiu
+let inputSquirtle
 let playerLives = 3
 let botLives = 3
 let playerVictories = 0
@@ -95,24 +97,6 @@ let sesbos = new Mokepon('Sesbos', './assets/sesbos.png', 5, './assets/sesbosMap
 let miu = new Mokepon('Miu', './assets/miu.png', 10, './assets/miuMap.png')
 let squirtle = new Mokepon('Squirtle', './assets/squirtle.png', 7, './assets/squirtleMap.png')
 
-const squirtleAttacks = [
-    { name: 'Water 💧', id: 'water-attack' },
-    { name: 'Water 💧', id: 'water-attack' },
-    { name: 'Fire 🔥', id: 'fire-attack' },
-    { name: 'Ground 🌱', id: 'ground-attack'},
-    { name: 'Ground 🌱', id: 'ground-attack'}
-]
-squirtle.attacks.push(...squirtleAttacks)
-
-const miuAttacks = [
-    { name: 'Water 💧', id: 'water-attack' },
-    { name: 'Fire 🔥', id: 'fire-attack' },
-    { name: 'Fire 🔥', id: 'fire-attack' },
-    { name: 'Ground 🌱', id: 'ground-attack'},
-    { name: 'Ground 🌱', id: 'ground-attack'}
-]
-miu.attacks.push(...miuAttacks)
-
 const fistyAttacks = [
     { name: 'Water 💧', id: 'water-attack' },
     { name: 'Water 💧', id: 'water-attack' },
@@ -166,6 +150,24 @@ const sesbosAttack = [
     { name: 'Water 💧', id: 'water-attack' }
 ]
 sesbos.attacks.push(...sesbosAttack)
+
+const squirtleAttacks = [
+    { name: 'Water 💧', id: 'water-attack' },
+    { name: 'Water 💧', id: 'water-attack' },
+    { name: 'Fire 🔥', id: 'fire-attack' },
+    { name: 'Ground 🌱', id: 'ground-attack'},
+    { name: 'Ground 🌱', id: 'ground-attack'}
+]
+squirtle.attacks.push(...squirtleAttacks)
+
+const miuAttacks = [
+    { name: 'Water 💧', id: 'water-attack' },
+    { name: 'Fire 🔥', id: 'fire-attack' },
+    { name: 'Fire 🔥', id: 'fire-attack' },
+    { name: 'Ground 🌱', id: 'ground-attack'},
+    { name: 'Ground 🌱', id: 'ground-attack'}
+]
+miu.attacks.push(...miuAttacks)
 
 
 mokepons.push(fisty, gorat, esmel, zerox, rasfas, sesbos, miu, squirtle)
@@ -446,7 +448,6 @@ const evaluateWin = () =>{
         result = 'Perdiste <br> ----Vuelve a intentarlo----'
         finalMessage()
     }
-    
 }
 
 const restartGame = () =>{
@@ -503,14 +504,14 @@ const sendPosition = (x, y)=>{
                     }else if(mokeponName === 'Rasfas'){
                         enemyMokepon = new Mokepon('Rasfas', './assets/rasfas.png', 5, './assets/rasfasMap1.png', 80, 60, enemy.id)
                     }else if(mokeponName === 'Sesbos'){
-                        enemyMokepon = new Mokepon('Sesbos', './assets/sesbos.png', 5, './assets/sesbosMap.png',60,60)
+                        enemyMokepon = new Mokepon('Sesbos', './assets/sesbos.png', 5, './assets/sesbosMap.png',60,60, enemy.id)
                     }else if(mokeponName === 'Miu'){
-                        enemyMokepon = new Mokepon('Miu', './assets/miu.png', 10, './assets/miuMap.png',60,60)
+                        enemyMokepon = new Mokepon('Miu', './assets/miu.png', 10, './assets/miuMap.png',60,60, enemy.id)
                     }else if(mokeponName === 'Squirtle'){
-                        enemyMokepon = new Mokepon('Squirtle', './assets/squirtle.png', 10, './assets/squirtleMap.png',60,60)
+                        enemyMokepon = new Mokepon('Squirtle', './assets/squirtle.png', 10, './assets/squirtleMap.png',60,60, enemy.id)
                     }
-                    enemyMokepon.x = enemy.x
-                    enemyMokepon.y = enemy.y
+                    enemyMokepon.x = enemy.x || 0
+                    enemyMokepon.y = enemy.y || 0
                     
                     return enemyMokepon
                 }))
