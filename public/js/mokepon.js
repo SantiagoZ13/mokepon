@@ -683,4 +683,10 @@ const changeMap = (mapImage, x, y) => {
     mokeponSelected.y = y
 }
 
-window.addEventListener('load', initializeGame)
+const configSection = () =>{
+    mokeponSelectionContainer.style.display = 'none'
+    mapContainer.style.display = 'none'
+    //initializeGame()
+}
+
+window.addEventListener('load', configSection)

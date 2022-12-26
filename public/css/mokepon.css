@@ -17,6 +17,16 @@ body{
     background: #011627;
     color: #41EAD4;
 }
+
+.btn{
+    padding: 1.5rem 2.5rem;
+    border-radius: 1rem;
+    font-family: 'Press Start 2P', cursive;
+    color: #FDFFFC;
+    cursor: pointer;
+    transition: all 0.6s;
+    margin: 0.8rem;
+}
 .mokepon-section{
     display: grid;
     grid-template-rows: repeat(3, 1fr);
@@ -30,6 +40,52 @@ h1{
     text-align: center;
     margin: 4rem 0;
     font-size: 3.4rem;
+}
+.config-section{
+    display: grid;
+    place-items: center;
+}
+.menu-image{
+    text-align: center;
+    width: 36rem;
+    border-radius: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    place-items: center;
+    height: 68vh;
+    gap: 2rem;
+    background: url('../assets/backgroundmenu.jpg') center no-repeat;
+    border: 0.1rem solid #07cf14;
+}
+.config-name label{
+    color: #011627;
+    font-size: 1.6rem;
+    display: block;
+    margin-bottom: 1rem;
+}
+.config-name input{
+    text-align: center;
+    background: #011627;
+    color: #07cf14;
+    font-family: 'Press Start 2P', cursive;
+    padding: 1rem;
+    border-radius: 1rem;
+    border: none;
+}
+.config-name input{
+    border: none;
+}
+.btn-config{
+    color: #07cf14;
+    background: #011627;
+}
+.btn-config:hover{
+    color: #011627;
+    background: transparent;
+    border: 0.2rem solid #07cf14;
+    letter-spacing: 0.3rem;
+    
 }
 .mokepon-section h2{
     width: 100%;
@@ -74,15 +130,6 @@ h1{
     margin-top: 1rem;
     width: 11rem;
     height: 11rem;
-}
-.btn{
-    padding: 1.5rem 2.5rem;
-    border-radius: 1rem;
-    font-family: 'Press Start 2P', cursive;
-    color: #FDFFFC;
-    cursor: pointer;
-    transition: all 0.6s;
-    margin: 0.8rem;
 }
 
 .btn-selection{
@@ -227,5 +274,7 @@ h1{
     h1{
         font-size: 2rem;
     }
-    
+    .menu-image{
+        width: 30rem;
+    }
 }
