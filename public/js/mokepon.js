@@ -14,6 +14,16 @@ const btnRestart = document.getElementById("btn-restart")
 const mapContainer = document.getElementById('map-section')
 const map = document.getElementById('map')
 
+// Interfaz de seleccion del modo de juego
+
+const OptionGameMenuContainer = document.getElementById('config-section')
+const btnOffline = document.getElementById('btn-offline')
+const btnOnline = document.getElementById('btn-online') // Falta implementar
+const btnExit = document.getElementById('btn-exit')
+let online = false
+let offline = false
+
+
 let enemysMokepons = []
 let playerId = null
 let enemyId = null
@@ -179,12 +189,30 @@ const miuAttacks = [
 ]
 miu.attacks.push(...miuAttacks)
 
-
 mokepons.push(fisty, gorat, esmel, zerox, rasfas, sesbos, miu, squirtle)
+
+const configSection = () =>{ // Solo mostrar el menu hasta que seleccione una opcion 
+    mokeponSelectionContainer.style.display = 'none'
+    mapContainer.style.display = 'none'
+    btnOffline.addEventListener('click', offlineClicked)
+    btnOnline.addEventListener('click',  onlineClicked)
+}
+
+const offlineClicked = () =>{
+    offline = true
+    initializeGame()
+}
+
+const onlineClicked = () =>{
+    online = true 
+    initializeGame()
+}
 
 const initializeGame = () => {
     mapContainer.style.display = 'none'
     attackSelectionContainer.style.display = 'none'
+    OptionGameMenuContainer.style.display = 'none'
+    mokeponSelectionContainer.style.display = 'grid'
 
     mokepons.forEach((mokepon) =>{
         mokeponStructure = `
@@ -209,7 +237,9 @@ const initializeGame = () => {
     btnMokeponSelection.addEventListener('click', mokeponSelect)
     btnRestart.addEventListener('click', restartGame)
 
-    joinGame()
+    if(online){
+        joinGame()
+    }
 }
 
 const joinGame = () =>{
@@ -263,7 +293,9 @@ const mokeponSelect = () => {
         return
     }
 
-    selectMokeponBackend(playerMokepon)
+    if(online){
+        selectMokeponBackend(playerMokepon)
+    }
 
     buscarAtaques(playerMokepon)
 }
@@ -295,7 +327,9 @@ function buscarAtaques(playerMokepon){
             attacksPlayer = mokepons[i].attacks
         }   
     }
-    showAttacks(attacksPlayer)
+    if(online){
+        showAttacks(attacksPlayer)
+    }
 }
 
 function showAttacks(attacks){
@@ -682,11 +716,4 @@ const changeMap = (mapImage, x, y) => {
     mokeponSelected.x = x 
     mokeponSelected.y = y
 }
-
-const configSection = () =>{
-    mokeponSelectionContainer.style.display = 'none'
-    mapContainer.style.display = 'none'
-    //initializeGame()
-}
-
 window.addEventListener('load', configSection)
